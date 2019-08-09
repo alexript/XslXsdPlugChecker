@@ -1,14 +1,19 @@
 package plug_checker.ui;
 
+import plug_checker.ui.html.HtmlGenerator;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static j2html.TagCreator.*;
 import static plug_checker.constants.Constants.*;
 
 
@@ -84,12 +89,14 @@ public class MainWindow extends JFrame {
             xsdPathErrorLabel.setVisible(!xsdFileExists);
             if(!(xslFileExists && xsdFileExists)) return;
 
-            try (Stream<String> stream = Files.lines(Paths.get(xslFilePath))){
-                stream.forEach(System.out::println);
-            } catch (IOException ioexception){
-                ioexception.printStackTrace();
-            }
+//            try (Stream<String> stream = Files.lines(Paths.get(xslFilePath))){
+//                stream.forEach(System.out::println);
+//            } catch (IOException ioexception){
+//                ioexception.printStackTrace();
+//            }
+            // TODO: add checker call here, transfer check result to generator
 
+            HtmlGenerator.generateHtml();
         });
     }
 
