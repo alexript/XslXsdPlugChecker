@@ -9,12 +9,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static plug_checker.constants.Constants.*;
 
 public class MainWindow extends JFrame {
+
+    private static final long serialVersionUID = -4492574305264279365L;
 
     public MainWindow() {
         initiateLayout();
@@ -22,19 +23,19 @@ public class MainWindow extends JFrame {
         setActionListeners();
     }
 
-    private JButton getXslButton = new JButton(new ImageIcon(getClass().getResource("/images/choose_file_icon.png")));
-    private JButton getXsdButton = new JButton(new ImageIcon(getClass().getResource("/images/choose_file_icon.png")));
+    private final JButton getXslButton = new JButton(new ImageIcon(getClass().getResource("/images/choose_file_icon.png")));
+    private final JButton getXsdButton = new JButton(new ImageIcon(getClass().getResource("/images/choose_file_icon.png")));
 
     private final JTextField xslPathField = new JTextField();
     private final JTextField xsdPathField = new JTextField();
 
-    private JLabel xslPathLabel = new JLabel(xslFieldLabel);
-    private JLabel xsdPathLabel = new JLabel(xsdFieldLabel);
+    private final JLabel xslPathLabel = new JLabel(xslFieldLabel);
+    private final JLabel xsdPathLabel = new JLabel(xsdFieldLabel);
 
-    private JLabel xslPathErrorLabel = new JLabel(xslPathErrorText);
-    private JLabel xsdPathErrorLabel = new JLabel(xsdPathErrorText);
+    private final JLabel xslPathErrorLabel = new JLabel(xslPathErrorText);
+    private final JLabel xsdPathErrorLabel = new JLabel(xsdPathErrorText);
 
-    private JButton createReport = new JButton(createReportButtonLabel);
+    private final JButton createReport = new JButton(createReportButtonLabel);
 
     private boolean checkIfFileExists(String path) {
         File temp = new File(path);
@@ -69,14 +70,14 @@ public class MainWindow extends JFrame {
     private void setActionListeners() {
         getXslButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if (!filePath.equals("")) {
+            if (!"".equals(filePath)) {
                 xslPathField.setText(filePath);
             }
         });
 
         getXsdButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if (!filePath.equals("")) {
+            if (!"".equals(filePath)) {
                 xsdPathField.setText(filePath);
             }
         });
@@ -96,7 +97,7 @@ public class MainWindow extends JFrame {
 
             // TODO: add checker call here, transfer check result to generator
             Checker checker = new Checker(xslFilePath, xsdFilePath);
-            HashMap <String, String> checkResult = checker.checkAllEntries();
+            HashMap<String, String> checkResult = checker.checkAllEntries();
             try {
                 HtmlGenerator.generateHtml(checkResult, File.createTempFile("output", ".html").getAbsolutePath());
             } catch (IOException ex) {

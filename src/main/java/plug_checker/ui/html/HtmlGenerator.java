@@ -3,13 +3,13 @@ package plug_checker.ui.html;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashMap;
 
 import static j2html.TagCreator.*;
 import static j2html.TagCreator.h1;
 
 import j2html.attributes.Attr;
-import j2html.tags.EmptyTag;
+import java.io.IOException;
+import java.util.HashMap;
 
 import static plug_checker.constants.Constants.*;
 
@@ -33,43 +33,43 @@ public class HtmlGenerator {
                                 ),
                                 tr().with(
                                         td().with(span(idFileHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true), span(checkResult.get(idFileHtmlLabel)))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkPrefixHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(false))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(false, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkNecessaryParametersHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkIdPolExtractHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkINNHtmLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkULorIPHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkTrustwHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkCodNoHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkVIdDockHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkForDifficultFormatsHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 )
                         )
                         )
@@ -79,22 +79,15 @@ public class HtmlGenerator {
         try {
             System.out.println(result);
             File tempFile = new File(outputFileName);
-            FileWriter writer = new FileWriter(tempFile);
-            writer.write(result);
-            writer.close();
+            try (FileWriter writer = new FileWriter(tempFile)) {
+                writer.write(result);
+                writer.flush();
+            }
 
             Desktop.getDesktop().browse(tempFile.toURI());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected static EmptyTag resultIconElement(boolean result) {
-        return img().attr(Attr.SRC, resultIcon(result));
-    }
-
-    protected static String resultIcon(boolean result) {
-        String imgRef = result ? "iconset/16x16/tick.png" : "iconset/16x16/cross.png";
-        return HtmlGenerator.class.getResource(imgRef).toString();
-    }
 }
