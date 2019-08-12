@@ -7,10 +7,6 @@ import java.util.HashMap;
 import static plug_checker.constants.Constants.*;
 
 public class Checker {
-    // TODO
-    // Input: file (String)
-    // Returns Map <String, Boolean>, String - field label, Boolean - check result
-
     private String xslFilePath;
     private String xsdFilePath;
     private FileParser xslParser;
@@ -42,7 +38,7 @@ public class Checker {
 
         System.out.println("xslParameterValue: " + xslParameterValue + ", xsdPathPrefixValue: " + xsdPathPrefixValue);
         if(xsdPathPrefixValue.equals(xslParameterValue)) return "+";
-        
+
         return "xsl parameter doesn't match with xsd file prefix";
     }
 
