@@ -43,7 +43,7 @@ class FileParser {
                         Node node = nodeMap.item(i);
 //                        System.out.println("attr name : " + node.getNodeName());
 //                        System.out.println("attr value : " + node.getNodeValue());
-                        if (node.getNodeName().equals("name") && node.getNodeValue().equals(nodeName)) {
+                        if ("name".equals(node.getNodeName()) && node.getNodeValue().equals(nodeName)) {
                             System.out.println("Found!");
                             return tempNode;
                         }

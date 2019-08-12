@@ -70,14 +70,14 @@ public class MainWindow extends JFrame {
     private void setActionListeners() {
         getXslButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if (!filePath.equals("")) {
+            if (!"".equals(filePath)) {
                 xslPathField.setText(filePath);
             }
         });
 
         getXsdButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if (!filePath.equals("")) {
+            if (!"".equals(filePath)) {
                 xsdPathField.setText(filePath);
             }
         });

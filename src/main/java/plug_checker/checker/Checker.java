@@ -38,7 +38,7 @@ public class Checker {
         String xsdPathWithoutDirs = cutDirsFromPath(xsdFilePath);
         String xslParameterValue = current.getTextContent();
 
-        int secondIndex = xsdPathWithoutDirs.indexOf("_", xsdPathWithoutDirs.indexOf("_") + 1);
+        int secondIndex = xsdPathWithoutDirs.indexOf('_', xsdPathWithoutDirs.indexOf('_') + 1);
         if (secondIndex < 0 || secondIndex >= xsdPathWithoutDirs.length()) {
             return "xsd file prefix not found or it's in wrong format";
         }
@@ -54,12 +54,12 @@ public class Checker {
 
     private String cutDirsFromPath(String filePath) {
         String result = filePath;
-        int slashIndex = filePath.lastIndexOf("/") + 1;
+        int slashIndex = filePath.lastIndexOf('/') + 1;
         if (slashIndex > 0) {
             result = filePath.substring(slashIndex);
         }
 
-        int backSlashIndex = result.lastIndexOf("\\") + 1;
+        int backSlashIndex = result.lastIndexOf('\\') + 1;
         if (backSlashIndex > 0) {
             result = result.substring(backSlashIndex);
         }
