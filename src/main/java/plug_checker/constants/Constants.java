@@ -21,4 +21,7 @@ public class Constants {
     public static final String resultHtmlLabel = "Результат";
 
     public static final String filePrefixAttribute = "PaternFile";
+    public static final String fileAlfavit1Attribute = "Alfavit1";
+    public static final String fileAlfavit2Attribute = "Alfavit2";
+    public static final String fileStartTestAttribute = "not(starts-with(translate($ИдФайл, $Alfavit1, $Alfavit2),$PaternFile))";
 }

@@ -8,14 +8,14 @@ import static j2html.TagCreator.*;
 import static j2html.TagCreator.h1;
 
 import j2html.attributes.Attr;
+import j2html.tags.ContainerTag;
+
 import java.io.IOException;
 import java.util.HashMap;
 
 import static plug_checker.constants.Constants.*;
 
 public class HtmlGenerator {
-
-    // TODO: replace hardcoded "+" with result Map from checker
     public static void generateHtml(HashMap<String, String> checkResult, String outputFileName) {
         String result = html(head(
                 title(reportHtmlTitle),
@@ -33,43 +33,43 @@ public class HtmlGenerator {
                                 ),
                                 tr().with(
                                         td().with(span(idFileHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell(checkResult.get(idFileHtmlLabel))
                                 ),
                                 tr().with(
                                         td().with(span(checkPrefixHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(false, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell(checkResult.get(checkPrefixHtmlLabel))
                                 ),
                                 tr().with(
                                         td().with(span(checkNecessaryParametersHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkIdPolExtractHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkINNHtmLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkULorIPHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkTrustwHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkCodNoHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkVIdDockHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 ),
                                 tr().with(
                                         td().with(span(checkForDifficultFormatsHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
+                                        generateOutputCell("+")
                                 )
                         )
                         )
@@ -77,7 +77,6 @@ public class HtmlGenerator {
         ).render();
 
         try {
-            System.out.println(result);
             File tempFile = new File(outputFileName);
             try (FileWriter writer = new FileWriter(tempFile)) {
                 writer.write(result);
@@ -88,6 +87,13 @@ public class HtmlGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static ContainerTag generateOutputCell(String checkResult) {
+        if("+".equals(checkResult)) {
+            return td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small));
+        }
+        return td().attr(Attr.ALIGN, "left").with(ImageEmbedder.resultIconElement(false, ImageEmbedder.IconSet.Small), span(checkResult));
     }
 
 }

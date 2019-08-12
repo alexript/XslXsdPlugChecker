@@ -2,7 +2,9 @@ package plug_checker.checker;
 
 import org.w3c.dom.Node;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static plug_checker.constants.Constants.*;
 
@@ -21,12 +23,13 @@ public class Checker {
     public HashMap<String, String> checkAllEntries() {
         HashMap<String, String> result = new HashMap<>();
         result.put(idFileHtmlLabel, idFilePrefixCheck());
+        result.put(checkPrefixHtmlLabel, checkPrefixForLatinSymbols());
 
         return result;
     }
 
     private String idFilePrefixCheck() {
-        Node current = xslParser.locateNodeByNameAttribute(filePrefixAttribute);
+        Node current = xslParser.getNodeWithNameAttribute(filePrefixAttribute);
         if (current == null) {
             return "Parameter " + filePrefixAttribute + " not found";
         }
@@ -39,13 +42,41 @@ public class Checker {
             return "xsd file prefix not found or it's in wrong format";
         }
         String xsdPathPrefixValue = xsdPathWithoutDirs.substring(0, secondIndex);
-
-        System.out.println("xslParameterValue: " + xslParameterValue + ", xsdPathPrefixValue: " + xsdPathPrefixValue);
         if (xsdPathPrefixValue.equals(xslParameterValue)) {
             return "+";
         }
-
         return "xsl parameter doesn't match with xsd file prefix";
+    }
+
+    private String checkPrefixForLatinSymbols() {
+        List<String> missingAlphabets = checkAlphabets();
+        String report = "";
+        if(missingAlphabets.size() > 0){
+            report = String.join(", ", checkAlphabets()) + " not found.";
+        }
+
+        Node prefixTest = xslParser.getNodeWithTestAttribute(fileStartTestAttribute);
+        if(prefixTest == null) {
+            report += " File prefix test not found";
+        }
+
+        return report.length() > 0 ? report : "+";
+    }
+
+    // Returns list of missing alphabets
+    private List<String> checkAlphabets(){
+        List<String> result = new ArrayList<>();
+
+        Node alphabet = xslParser.getNodeWithNameAttribute(fileAlfavit1Attribute);
+        if (alphabet == null) {
+            result.add(fileAlfavit1Attribute);
+        }
+        alphabet = xslParser.getNodeWithNameAttribute(fileAlfavit2Attribute);
+        if (alphabet == null) {
+            result.add(fileAlfavit2Attribute);
+        }
+
+        return result;
     }
 
     private String cutDirsFromPath(String filePath) {
