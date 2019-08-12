@@ -37,7 +37,7 @@ public class Checker {
         String xsdPathPrefixValue = xsdPathWithoutDirs.substring(0, secondIndex);
 
         System.out.println("xslParameterValue: " + xslParameterValue + ", xsdPathPrefixValue: " + xsdPathPrefixValue);
-        if(xsdPathPrefixValue.equals(xslParameterValue)) return "+";
+        if(xsdPathPrefixValue.equals(xslParameterValue)) return "";
 
         return "xsl parameter doesn't match with xsd file prefix";
     }
