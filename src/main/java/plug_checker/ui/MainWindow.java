@@ -16,11 +16,13 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static j2html.TagCreator.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static plug_checker.constants.Constants.*;
 
-
 public class MainWindow extends JFrame {
-    public MainWindow(){
+
+    public MainWindow() {
         initiateLayout();
         applyVisualConstraints();
         setActionListeners();
@@ -40,12 +42,12 @@ public class MainWindow extends JFrame {
 
     private JButton createReport = new JButton(createReportButtonLabel);
 
-    private boolean checkIfFileExists(String path){
+    private boolean checkIfFileExists(String path) {
         File temp = new File(path);
         return temp.exists() && temp.canRead();
     }
 
-    private String processChooseFileDialog(){
+    private String processChooseFileDialog() {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         int returnValue = jfc.showOpenDialog(null);
 
@@ -56,7 +58,7 @@ public class MainWindow extends JFrame {
         return "";
     }
 
-    private void initiateLayout(){
+    private void initiateLayout() {
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
         setTitle("XSL/XSD document checker");
@@ -70,15 +72,19 @@ public class MainWindow extends JFrame {
         pack();
     }
 
-    private void setActionListeners(){
+    private void setActionListeners() {
         getXslButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if(!filePath.equals("")) xslPathField.setText(filePath);
+            if (!filePath.equals("")) {
+                xslPathField.setText(filePath);
+            }
         });
 
         getXsdButton.addActionListener(e -> {
             String filePath = processChooseFileDialog();
-            if(!filePath.equals("")) xsdPathField.setText(filePath);
+            if (!filePath.equals("")) {
+                xsdPathField.setText(filePath);
+            }
         });
 
         createReport.addActionListener(e -> {
@@ -90,17 +96,31 @@ public class MainWindow extends JFrame {
 
             xslPathErrorLabel.setVisible(!xslFileExists);
             xsdPathErrorLabel.setVisible(!xsdFileExists);
-            if(!(xslFileExists && xsdFileExists)) return;
+            if (!(xslFileExists && xsdFileExists)) {
+                return;
+            }
 
             // TODO: add checker call here, transfer check result to generator
             Checker checker = new Checker(xslFilePath, xsdFilePath);
             HashMap <String, String> checkResult = checker.checkAllEntries();
 
             HtmlGenerator.generateHtml(checkResult);
+            //            try (Stream<String> stream = Files.lines(Paths.get(xslFilePath))){
+//                stream.forEach(System.out::println);
+//            } catch (IOException ioexception){
+//                ioexception.printStackTrace();
+//            }
+// TODO: add checker call here, transfer check result to generator
+            try {
+
+                HtmlGenerator.generateHtml(File.createTempFile("output", ".html").getAbsolutePath());
+            } catch (IOException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
-    private void applyVisualConstraints(){
+    private void applyVisualConstraints() {
         getXslButton.setBorder(null);
         getXsdButton.setBorder(null);
 
