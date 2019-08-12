@@ -1,5 +1,6 @@
 package plug_checker.ui;
 
+import plug_checker.checker.Checker;
 import plug_checker.ui.html.HtmlGenerator;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static j2html.TagCreator.*;
@@ -65,6 +67,7 @@ public class MainWindow extends JFrame {
         setMinimumSize(new Dimension(500, 500));
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.WHITE);
 
         pack();
     }
@@ -97,6 +100,11 @@ public class MainWindow extends JFrame {
                 return;
             }
 
+            // TODO: add checker call here, transfer check result to generator
+            Checker checker = new Checker(xslFilePath, xsdFilePath);
+            HashMap <String, String> checkResult = checker.checkAllEntries();
+
+            HtmlGenerator.generateHtml(checkResult);
             //            try (Stream<String> stream = Files.lines(Paths.get(xslFilePath))){
 //                stream.forEach(System.out::println);
 //            } catch (IOException ioexception){

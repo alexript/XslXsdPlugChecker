@@ -3,6 +3,7 @@ package plug_checker.ui.html;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.HashMap;
 
 import static j2html.TagCreator.*;
 import static j2html.TagCreator.h1;
