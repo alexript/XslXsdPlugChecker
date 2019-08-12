@@ -7,15 +7,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.stream.Stream;
-
-import static j2html.TagCreator.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static plug_checker.constants.Constants.*;
@@ -102,9 +95,9 @@ public class MainWindow extends JFrame {
 
             // TODO: add checker call here, transfer check result to generator
             Checker checker = new Checker(xslFilePath, xsdFilePath);
-            HashMap <String, String> checkResult = checker.checkAllEntries();
+            HashMap<String, String> checkResult = checker.checkAllEntries();
 
-            HtmlGenerator.generateHtml(checkResult);
+            //   HtmlGenerator.generateHtml(checkResult);
             //            try (Stream<String> stream = Files.lines(Paths.get(xslFilePath))){
 //                stream.forEach(System.out::println);
 //            } catch (IOException ioexception){

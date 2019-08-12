@@ -30,43 +30,43 @@ public class HtmlGenerator {
                         ),
                                 tr().with(
                                         td().with(span(idFileHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkPrefixHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(false))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(false, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkNecessaryParametersHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkIdPolExtractHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkINNHtmLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkULorIPHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkTrustwHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkCodNoHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkVIdDockHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 ),
                                 tr().with(
                                         td().with(span(checkForDifficultFormatsHtmlLabel)),
-                                        td().attr(Attr.ALIGN, "center").with(resultIconElement(true))
+                                        td().attr(Attr.ALIGN, "center").with(ImageEmbedder.resultIconElement(true, ImageEmbedder.IconSet.Small))
                                 )
                         )
                 )
@@ -86,12 +86,4 @@ public class HtmlGenerator {
         }
     }
 
-    protected static EmptyTag resultIconElement(boolean result) {
-        return img().attr(Attr.SRC, resultIcon(result));
-    }
-
-    protected static String resultIcon(boolean result) {
-        String imgRef = result ? "iconset/16x16/tick.png" : "iconset/16x16/cross.png";
-        return HtmlGenerator.class.getResource(imgRef).toString();
-    }
 }
