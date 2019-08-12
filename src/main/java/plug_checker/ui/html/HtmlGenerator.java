@@ -3,6 +3,7 @@ package plug_checker.ui.html;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.HashMap;
 
 import static j2html.TagCreator.*;
 import static j2html.TagCreator.h1;
@@ -10,7 +11,7 @@ import static plug_checker.constants.Constants.*;
 
 public class HtmlGenerator {
     // TODO: replace hardcoded "+" with result Map from checker
-    public static void generateHtml(){
+    public static void generateHtml(HashMap<String, String> checkResults){
         String result = html(
                 head(
                         title(reportHtmlTitle),
@@ -30,7 +31,7 @@ public class HtmlGenerator {
                                         ),
                                         tr().with(
                                                 td().with(span(idFileHtmlLabel)),
-                                                td().with(span("+"))
+                                                td().with(span(checkResults.get(idFileHtmlLabel)))
                                         ),
                                         tr().with(
                                                 td().with(span(checkPrefixHtmlLabel)),

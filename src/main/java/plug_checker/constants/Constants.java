@@ -7,7 +7,7 @@ public class Constants {
     public static final String xsdPathErrorText = "xsd файл не найден!";
     public static final String createReportButtonLabel = "Сформировать отчет";
     public static final String reportHtmlTitle = "Отчет по тестированию";
-    public static final String idFileHtmlLabel = "Наличие префикса ИдФайл";
+    public static final String idFileHtmlLabel = "Наличие переменной префикса ИдФайл";
     public static final String checkPrefixHtmlLabel = "Проверка префикса на латинские буквы";
     public static final String checkNecessaryParametersHtmlLabel = "Проверка на наличие обязательных переменных";
     public static final String checkIdPolExtractHtmlLabel = "Проверка на Извлечение ИдПол из ИдФайла";
@@ -19,4 +19,6 @@ public class Constants {
     public static final String checkForDifficultFormatsHtmlLabel = "Проверка на пустышку сложных форматов НДС, бухбаланс";
     public static final String checkHtmlLabel = "Проверка";
     public static final String resultHtmlLabel = "Результат";
+
+    public static final String filePrefixAttribute = "PaternFile";
 }
