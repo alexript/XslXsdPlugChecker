@@ -3,12 +3,11 @@ package plug_checker.ui.html;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashMap;
 
 import static j2html.TagCreator.*;
 import static j2html.TagCreator.h1;
 import j2html.attributes.Attr;
-import j2html.tags.EmptyTag;
+import java.io.IOException;
 import static plug_checker.constants.Constants.*;
 
 public class HtmlGenerator {
@@ -76,12 +75,13 @@ public class HtmlGenerator {
         try {
             System.out.println(result);
             File tempFile = new File(outputFileName);
-            FileWriter writer = new FileWriter(tempFile);
-            writer.write(result);
-            writer.close();
+            try (FileWriter writer = new FileWriter(tempFile)) {
+                writer.write(result);
+                writer.flush();
+            }
 
             Desktop.getDesktop().browse(tempFile.toURI());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
