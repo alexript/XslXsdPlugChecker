@@ -49,7 +49,7 @@ public class HtmlGenerator {
                                 ),
                                 tr().with(
                                         td().with(span(checkINNHtmLabel)),
-                                        generateOutputCell("+")
+                                        generateOutputCell(checkResult.get(checkINNHtmLabel))
                                 ),
                                 tr().with(
                                         td().with(span(checkULorIPHtmlLabel)),

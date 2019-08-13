@@ -28,6 +28,7 @@ public class Checker {
         result.put(checkPrefixHtmlLabel, checkPrefixForLatinSymbols());
         result.put(checkNecessaryParametersHtmlLabel, checkForNecessaryAttributes());
         result.put(checkIdPolExtractHtmlLabel, checkIdPolFileExtracting());
+        result.put(checkINNHtmLabel, checkINNandKPP());
 
         return result;
     }
@@ -130,32 +131,64 @@ public class Checker {
         return filePrefixAttribute + " length + 7 doesn't match " + idPolFileAttribute + " select";
     }
 
-    private String checkINNKPP(){
+    private String checkINNandKPP(){
         String report = "";
         Node innflXsdNode = xsdParser.getNodeWithNameAttribute(INNFLFileAttribute);
-        boolean innflExistsInXsd = true;
-        if(innflXsdNode == null) {
-            innflExistsInXsd = false;
-        }
+        boolean innflExistsInXsd = innflXsdNode != null;
+
+        Node innulXsdNode = xsdParser.getNodeWithNameAttribute(INNULFileAttribute);
+        boolean innulExistsInXsd = innulXsdNode != null;
 
         Node checkKPP = xslParser.getParentNodeWithNameAttribute(KPPFileAttribute);
         if(checkKPP != null) {
-            boolean selectInvalidMsgAttributeIsCorrect = checkNodeValue(checkKPP, invalidMsgSelectAttribute);
-            if(!selectInvalidMsgAttributeIsCorrect) {
-                report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+            boolean selectKPPAttributeIsCorrect = checkNodeValue(checkKPP, KPPFileSelectAttribute);
+            if(!selectKPPAttributeIsCorrect) {
+                report += "Incorrect " + KPPFileAttribute + " select attribute. ";
             }
         } else {
-            report = invalidMsgAttribute + " is not found. ";
+            report = KPPFileAttribute + " not found. ";
         }
 
-        Node checkIdFile = xslParser.getParentNodeWithNameAttribute(idFileAttribute);
-        if(checkIdFile != null) {
-            boolean selectIdFileAttributeIsCorrect = checkNodeValue(checkIdFile, idFileSelectAttribute);
-            if(!selectIdFileAttributeIsCorrect) {
-                report += "Incorrect " + idFileAttribute + " select attribute. ";
+        Node checkNPUL = xslParser.getParentNodeWithNameAttribute(NPULFileAttribute);
+        if(checkNPUL != null) {
+            boolean selectNPULAttributeIsCorrect = checkNodeValue(checkNPUL, NPULFileSelectAttribute);
+            if(!selectNPULAttributeIsCorrect) {
+                report += "Incorrect " + NPULFileAttribute + " select attribute. ";
             }
         } else {
-            report += idFileAttribute + " is not found. ";
+            report += NPULFileAttribute + " is not found. ";
+        }
+
+        if(!innflExistsInXsd && !innulExistsInXsd) {
+            report += "No " + INNFLFileAttribute + " or " + INNULFileAttribute + " in xsd file. ";
+            return report;
+        }
+
+        Node innflXslNode = xslParser.getParentNodeWithNameAttribute(INNFLFileAttribute);
+        boolean innflExistsInXsl = innflXslNode != null;
+        if(innflExistsInXsd != innflExistsInXsl) {
+            report += INNFLFileAttribute + " in xsd and xsl doesn't match. ";
+        } else {
+            if(innflExistsInXsl) {
+                boolean selectINNFLAttributeIsCorrect = checkNodeValue(innflXslNode, INNFLFileSelectAttribute);
+                if(!selectINNFLAttributeIsCorrect) {
+                    report += "Incorrect " + INNFLFileAttribute + " select attribute. ";
+                }
+            }
+        }
+
+        Node innulXslNode = xslParser.getParentNodeWithNameAttribute(INNULFileAttribute);
+        boolean innulExistsInXsl = innulXslNode != null;
+        if(innulExistsInXsd != innulExistsInXsl) {
+            report += INNULFileAttribute + " in xsd and xsl doesn't match. ";
+        } else {
+            if(innulExistsInXsl) {
+                boolean selectINNULAttributeIsCorrect = checkNodeValue(innulXslNode, INNULFileSelectAttribute);
+
+                if(!selectINNULAttributeIsCorrect) {
+                    report += "Incorrect " + INNULFileAttribute + " select attribute. ";
+                }
+            }
         }
 
         return report.length() > 0 ? report : "+";

@@ -32,7 +32,7 @@ public class Constants {
     public static final String INNULFileAttribute = "ИННЮЛ";
     public static final String INNULFileSelectAttribute = "/Файл/Документ/СвНП/НПЮЛ/@ИННЮЛ";
     public static final String INNFLFileAttribute = "ИННФЛ";
-    public static final String INNFLFileSelectAttribute = "/Файл/Документ/СвНП/НПЮЛ/@ИННЮЛ"; // TODO check with real data
+    public static final String INNFLFileSelectAttribute = "/Файл/Документ/СвНП/НПФЛ/@ИННФЛ";
     public static final String KPPFileAttribute = "КПП";
     public static final String KPPFileSelectAttribute = "/Файл/Документ/СвНП/НПЮЛ/@КПП";
     public static final String NPULFileAttribute = "НПЮЛ";
