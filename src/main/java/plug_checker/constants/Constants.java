@@ -21,7 +21,12 @@ public class Constants {
     public static final String resultHtmlLabel = "Результат";
 
     public static final String filePrefixAttribute = "PaternFile";
-    public static final String fileAlfavit1Attribute = "Alfavit1";
-    public static final String fileAlfavit2Attribute = "Alfavit2";
+    public static final String alfavit1Attribute = "Alfavit1";
+    public static final String alfavit2Attribute = "Alfavit2";
     public static final String fileStartTestAttribute = "not(starts-with(translate($ИдФайл, $Alfavit1, $Alfavit2),$PaternFile))";
+    public static final String invalidMsgAttribute = "InvalidMsg";
+    public static final String invalidMsgSelectAttribute = "string('Неверное значение реквизита: ')";
+    public static final String idFileAttribute = "ИдФайл";
+    public static final String idFileSelectAttribute = "/Файл/@ИдФайл";
+    public static final String idPolFileAttribute = "ИдПолФайл";
 }

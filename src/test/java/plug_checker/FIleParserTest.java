@@ -5,10 +5,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import plug_checker.checker.FileParser;
 
 import static plug_checker.constants.Constants.fileStartTestAttribute;
+import static plug_checker.constants.Constants.invalidMsgAttribute;
 
 class FileParserTest {
 
@@ -33,7 +35,19 @@ class FileParserTest {
 
     @Test
     public void testGetNodeIfExists() {
-         Node check = mockParser.getNodeWithTestAttribute(fileStartTestAttribute);
-         System.out.println(check.getNodeValue() + check.getNodeName());
+        Node check = mockParser.getNodeWithSelectAttribute(invalidMsgAttribute);
+        System.out.println(check.getNodeValue() + check.getNodeName());
+    }
+
+    @Test
+    public void testGetParentNodeIfExists() {
+        Node check = mockParser.getParentNodeWithNameAttribute(invalidMsgAttribute);
+        if (check.hasAttributes()) {
+            NamedNodeMap nodeMap = check.getAttributes();
+            for (int i = 0; i < nodeMap.getLength(); i++) {
+                Node node = nodeMap.item(i);
+                System.out.println(node.getNodeValue() + node.getNodeName());
+            }
+        }
     }
 }

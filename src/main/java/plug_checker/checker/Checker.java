@@ -1,5 +1,6 @@
 package plug_checker.checker;
 
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Checker {
         HashMap<String, String> result = new HashMap<>();
         result.put(idFileHtmlLabel, idFilePrefixCheck());
         result.put(checkPrefixHtmlLabel, checkPrefixForLatinSymbols());
+        result.put(checkNecessaryParametersHtmlLabel, checkForNecessaryAttributes());
 
         return result;
     }
@@ -63,17 +65,60 @@ public class Checker {
         return report.length() > 0 ? report : "+";
     }
 
+    private String checkForNecessaryAttributes(){
+        String report = "";
+        boolean selectInvalidMsgAttributeIsCorrect = false;
+        boolean selectIdFileAttributeIsCorrect = false;
+
+        Node checkInvalidMsg = xslParser.getParentNodeWithNameAttribute(invalidMsgAttribute);
+        if(checkInvalidMsg != null) {
+            selectInvalidMsgAttributeIsCorrect = checkNodeValue(checkInvalidMsg, invalidMsgSelectAttribute);
+        } else {
+            report = invalidMsgAttribute + " is not found. ";
+        }
+
+        Node checkIdFile = xslParser.getParentNodeWithNameAttribute(idFileAttribute);
+        if(checkIdFile != null) {
+            selectIdFileAttributeIsCorrect = checkNodeValue(checkIdFile, idFileSelectAttribute);
+        } else {
+            report += idFileAttribute + " is not found. ";
+        }
+
+        if(!report.contains(invalidMsgAttribute) && !selectInvalidMsgAttributeIsCorrect) {
+            report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+        }
+
+        if(!report.contains(idFileAttribute) && !selectIdFileAttributeIsCorrect) {
+            report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+        }
+
+        return report.length() > 0 ? report : "+";
+    }
+
+    private boolean checkNodeValue(Node checkInvalidMsg, String attributeValue) {
+        if (checkInvalidMsg.hasAttributes()) {
+            NamedNodeMap nodeMap = checkInvalidMsg.getAttributes();
+            for (int i = 0; i < nodeMap.getLength(); i++) {
+                Node node = nodeMap.item(i);
+                if(node.getNodeValue().equals(attributeValue)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // Returns list of missing alphabets
     private List<String> checkAlphabets(){
         List<String> result = new ArrayList<>();
 
-        Node alphabet = xslParser.getNodeWithNameAttribute(fileAlfavit1Attribute);
+        Node alphabet = xslParser.getNodeWithNameAttribute(alfavit1Attribute);
         if (alphabet == null) {
-            result.add(fileAlfavit1Attribute);
+            result.add(alfavit1Attribute);
         }
-        alphabet = xslParser.getNodeWithNameAttribute(fileAlfavit2Attribute);
+        alphabet = xslParser.getNodeWithNameAttribute(alfavit2Attribute);
         if (alphabet == null) {
-            result.add(fileAlfavit2Attribute);
+            result.add(alfavit2Attribute);
         }
 
         return result;
