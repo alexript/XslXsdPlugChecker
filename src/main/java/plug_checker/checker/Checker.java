@@ -13,12 +13,13 @@ public class Checker {
     private final String xslFilePath;
     private final String xsdFilePath;
     private final FileParser xslParser;
-    private FileParser xsdParser;
+    private final FileParser xsdParser;
 
     public Checker(String xslFilePath, String xdlFilePath) {
         this.xslFilePath = xslFilePath;
         this.xsdFilePath = xdlFilePath;
         this.xslParser = new FileParser(xslFilePath);
+        this.xsdParser = new FileParser(xsdFilePath);
     }
 
     public HashMap<String, String> checkAllEntries() {
@@ -32,15 +33,15 @@ public class Checker {
     }
 
     private String idFilePrefixCheck() {
-        Node current = xslParser.getNodeWithNameAttribute(filePrefixAttribute);
-        if (current == null) {
+        Node filePrefixNode = xslParser.getParentNodeWithNameAttribute(filePrefixAttribute);
+        if (filePrefixNode == null) {
             return "Parameter " + filePrefixAttribute + " not found";
         }
 
         String xsdPathWithoutDirs = cutDirsFromPath(xsdFilePath);
-        String xslParameterValue = current.getTextContent();
+        String xslParameterValue = filePrefixNode.getTextContent();
 
-        int secondIndex = xsdPathWithoutDirs.indexOf('_', xsdPathWithoutDirs.indexOf('_') + 1);
+        int secondIndex = getSecondIndexOf(xsdPathWithoutDirs, "_");
         if (secondIndex < 0 || secondIndex >= xsdPathWithoutDirs.length()) {
             return "xsd file prefix not found or it's in wrong format";
         }
@@ -49,6 +50,10 @@ public class Checker {
             return "+";
         }
         return "xsl parameter doesn't match with xsd file prefix";
+    }
+
+    private int getSecondIndexOf(String str, String separator) {
+        return str.indexOf(separator, str.indexOf(separator) + 1);
     }
 
     private String checkPrefixForLatinSymbols() {
@@ -68,29 +73,25 @@ public class Checker {
 
     private String checkForNecessaryAttributes(){
         String report = "";
-        boolean selectInvalidMsgAttributeIsCorrect = false;
-        boolean selectIdFileAttributeIsCorrect = false;
 
         Node checkInvalidMsg = xslParser.getParentNodeWithNameAttribute(invalidMsgAttribute);
         if(checkInvalidMsg != null) {
-            selectInvalidMsgAttributeIsCorrect = checkNodeValue(checkInvalidMsg, invalidMsgSelectAttribute);
+            boolean selectInvalidMsgAttributeIsCorrect = checkNodeValue(checkInvalidMsg, invalidMsgSelectAttribute);
+            if(!selectInvalidMsgAttributeIsCorrect) {
+                report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+            }
         } else {
             report = invalidMsgAttribute + " is not found. ";
         }
 
         Node checkIdFile = xslParser.getParentNodeWithNameAttribute(idFileAttribute);
         if(checkIdFile != null) {
-            selectIdFileAttributeIsCorrect = checkNodeValue(checkIdFile, idFileSelectAttribute);
+            boolean selectIdFileAttributeIsCorrect = checkNodeValue(checkIdFile, idFileSelectAttribute);
+            if(!selectIdFileAttributeIsCorrect) {
+                report += "Incorrect " + idFileAttribute + " select attribute. ";
+            }
         } else {
             report += idFileAttribute + " is not found. ";
-        }
-
-        if(!report.contains(invalidMsgAttribute) && !selectInvalidMsgAttributeIsCorrect) {
-            report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
-        }
-
-        if(!report.contains(idFileAttribute) && !selectIdFileAttributeIsCorrect) {
-            report += "Incorrect " + idFileAttribute + " select attribute. ";
         }
 
         return report.length() > 0 ? report : "+";
@@ -101,8 +102,14 @@ public class Checker {
 
         Node idPolFileNode = xslParser.getParentNodeWithNameAttribute(idPolFileAttribute);
         if(idPolFileNode == null) {
-            return idPolFileAttribute + " is not found. ";
+            return idPolFileAttribute + " not found. ";
         }
+
+        Node patternFileNode = xslParser.getParentNodeWithNameAttribute(filePrefixAttribute);
+        if(patternFileNode == null) {
+            return filePrefixAttribute + " not found. ";
+        }
+
         String idPolExtractor = getNodeAttributeValue(idPolFileNode, "select");
         if(idPolExtractor == null) {
             return idPolFileAttribute + " doesn't have select attribute.";
@@ -112,14 +119,47 @@ public class Checker {
         if(tokenArray.length < 3) {
             return idPolFileAttribute + " select attribute syntax isn't correct";
         }
+        String xslParameterValue = patternFileNode.getTextContent();
 
         int firstSymbolIndex = Integer.parseInt(tokenArray[1]);
-        int codeLength = Integer.parseInt(tokenArray[2]);
 
-        report = firstSymbolIndex +  " " + codeLength; // temp
-        // TODO using firstSymbolIndex & codeLength extract IFNS code from xsd filename after confirming task details
+        if(xslParameterValue.length() + 7 == firstSymbolIndex) {
+            return "+";
+        }
+
+        return filePrefixAttribute + " length + 7 doesn't match " + idPolFileAttribute + " select";
+    }
+
+    private String checkINNKPP(){
+        String report = "";
+        Node innflXsdNode = xsdParser.getNodeWithNameAttribute(INNFLFileAttribute);
+        boolean innflExistsInXsd = true;
+        if(innflXsdNode == null) {
+            innflExistsInXsd = false;
+        }
+
+        Node checkKPP = xslParser.getParentNodeWithNameAttribute(KPPFileAttribute);
+        if(checkKPP != null) {
+            boolean selectInvalidMsgAttributeIsCorrect = checkNodeValue(checkKPP, invalidMsgSelectAttribute);
+            if(!selectInvalidMsgAttributeIsCorrect) {
+                report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+            }
+        } else {
+            report = invalidMsgAttribute + " is not found. ";
+        }
+
+        Node checkIdFile = xslParser.getParentNodeWithNameAttribute(idFileAttribute);
+        if(checkIdFile != null) {
+            boolean selectIdFileAttributeIsCorrect = checkNodeValue(checkIdFile, idFileSelectAttribute);
+            if(!selectIdFileAttributeIsCorrect) {
+                report += "Incorrect " + idFileAttribute + " select attribute. ";
+            }
+        } else {
+            report += idFileAttribute + " is not found. ";
+        }
 
         return report.length() > 0 ? report : "+";
+
     }
 
     private String getNodeAttributeValue(Node node, String attributeName) {

@@ -13,11 +13,13 @@ import static plug_checker.constants.Constants.invalidMsgAttribute;
 
 class FileParserTest {
 
-    private static FileParser mockParser;
+    private static FileParser xslMockParser;
+    private static FileParser xsdMockParser;
 
     @BeforeAll
     static void setUpClass() {
-        mockParser = new FileParser("D:/demo.xsl");
+        xslMockParser = new FileParser("D:/demo.xsl");
+        xsdMockParser = new FileParser("D:/demo.xsd");
     }
 
     @AfterAll
@@ -33,14 +35,19 @@ class FileParserTest {
     }
 
     @Test
+    public void testXsdRead(){
+        xslMockParser.printDocument();
+    }
+
+    @Test
     public void testGetNodeIfExists() {
-        Node check = mockParser.getNodeWithSelectAttribute(invalidMsgAttribute);
+        Node check = xslMockParser.getNodeWithSelectAttribute(invalidMsgAttribute);
         System.out.println(check.getNodeValue() + check.getNodeName());
     }
 
     @Test
     public void testGetParentNodeIfExists() {
-        Node check = mockParser.getParentNodeWithNameAttribute(invalidMsgAttribute);
+        Node check = xslMockParser.getParentNodeWithNameAttribute(invalidMsgAttribute);
         if (check.hasAttributes()) {
             NamedNodeMap nodeMap = check.getAttributes();
             for (int i = 0; i < nodeMap.getLength(); i++) {

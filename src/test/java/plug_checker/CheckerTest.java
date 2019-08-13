@@ -54,4 +54,27 @@ public class CheckerTest {
             System.out.println(temp);
         }
     }
+
+    @Test
+    public void testPrefixCodeCheck(){
+        int firstSymbolIndex = 17;
+        int codeLength = 4;
+
+        String xsdPathWithoutDirs = "NO_BOUCHR8_1_148_00_05_04_01.xsd";
+        String codeByXslInfo = xsdPathWithoutDirs.substring(firstSymbolIndex, firstSymbolIndex + codeLength);
+
+        int secondUnderscoreIndex = getSecondIndexOf(xsdPathWithoutDirs, "_");
+
+        String xsdPathPrefixValue = xsdPathWithoutDirs.substring(0, secondUnderscoreIndex);
+        int indexByXsdNamePrefix = xsdPathPrefixValue.length() + 7;
+
+
+        System.out.println("xsd name: " + xsdPathWithoutDirs.substring(indexByXsdNamePrefix, indexByXsdNamePrefix + codeLength));
+        System.out.println("xss name: " + codeByXslInfo);
+
+        // TODO using firstSymbolIndex & codeLength extract IFNS code from xsd filename after confirming task details
+    }
+    private int getSecondIndexOf(String str, String separator) {
+        return str.indexOf(separator, str.indexOf(separator) + 1);
+    }
 }
