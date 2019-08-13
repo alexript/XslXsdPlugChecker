@@ -73,6 +73,14 @@ public class FileParser {
         return getParentNodeIfExists(this.nodeList, nodeName, "name");
     }
 
+    public Node getParentNodeWithIdAttribute(String nodeId) {
+        return getParentNodeIfExists(this.nodeList, nodeId, "id");
+    }
+
+    public Node getParentNodeWithTestAttribute(String nodeId) {
+        return getParentNodeIfExists(this.nodeList, nodeId, "test");
+    }
+
     private Node getParentNodeIfExists(NodeList nodeList, String nodeName, String attributeName) {
         Node resultNode = null;
         for (int count = 0; count < nodeList.getLength(); count++) {
@@ -90,6 +98,30 @@ public class FileParser {
                 }
                 if (tempNode.hasChildNodes()) {
                     Node tempReturnNode = getParentNodeIfExists(tempNode.getChildNodes(), nodeName, attributeName);
+                    if(tempReturnNode != null) {
+                        resultNode = tempReturnNode;
+                        break;
+                    }
+                }
+            }
+        }
+        return resultNode;
+    }
+
+    public Node getNodeByName (String nodeName) {
+        return getNodeByName(this.nodeList, nodeName);
+    }
+
+    private Node getNodeByName (NodeList nodeList, String nodeName) {
+        Node resultNode = null;
+        for (int count = 0; count < nodeList.getLength(); count++) {
+            Node tempNode = nodeList.item(count);
+            if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
+               if(tempNode.getNodeName().equals(nodeName)) {
+                   resultNode = tempNode;
+               }
+                if (tempNode.hasChildNodes()) {
+                    Node tempReturnNode = getNodeByName(tempNode.getChildNodes(), nodeName);
                     if(tempReturnNode != null) {
                         resultNode = tempReturnNode;
                         break;

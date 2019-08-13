@@ -53,18 +53,18 @@ public class HtmlGenerator {
                                 ),
                                 tr().with(
                                         td().with(span(checkULorIPHtmlLabel)),
-                                        generateOutputCell("+")
+                                        generateOutputCell(checkResult.get(checkULorIPHtmlLabel))
                                 ),
                                 tr().with(
                                         td().with(span(checkTrustwHtmlLabel)),
                                         generateOutputCell("+")
                                 ),
                                 tr().with(
-                                        td().with(span(checkCodNoHtmlLabel)),
+                                        td().with(span(checkCodNOHtmlLabel)),
                                         generateOutputCell("+")
                                 ),
                                 tr().with(
-                                        td().with(span(checkVIdDockHtmlLabel)),
+                                        td().with(span(checkVidDockHtmlLabel)),
                                         generateOutputCell("+")
                                 ),
                                 tr().with(

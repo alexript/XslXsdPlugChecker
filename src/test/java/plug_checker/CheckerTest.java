@@ -70,9 +70,7 @@ public class CheckerTest {
 
 
         System.out.println("xsd name: " + xsdPathWithoutDirs.substring(indexByXsdNamePrefix, indexByXsdNamePrefix + codeLength));
-        System.out.println("xss name: " + codeByXslInfo);
-
-        // TODO using firstSymbolIndex & codeLength extract IFNS code from xsd filename after confirming task details
+        System.out.println("xsl name: " + codeByXslInfo);
     }
     private int getSecondIndexOf(String str, String separator) {
         return str.indexOf(separator, str.indexOf(separator) + 1);

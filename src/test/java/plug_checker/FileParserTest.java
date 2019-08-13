@@ -36,6 +36,11 @@ class FileParserTest {
 
     @Test
     public void testXsdRead(){
+        xsdMockParser.printDocument();
+    }
+
+    @Test
+    public void testXslRead(){
         xslMockParser.printDocument();
     }
 

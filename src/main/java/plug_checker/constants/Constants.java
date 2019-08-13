@@ -14,8 +14,8 @@ public class Constants {
     public static final String checkINNHtmLabel = "Проверка на определение ИНН и КПП";
     public static final String checkULorIPHtmlLabel = "Проверка на то, кто сдает документ (ЮЛ и/или ИП)";
     public static final String checkTrustwHtmlLabel = "Проверка на доверенность";
-    public static final String checkCodNoHtmlLabel = "Проверка на наличие КодНО";
-    public static final String checkVIdDockHtmlLabel = "Проверка на наличие ВидДок";
+    public static final String checkCodNOHtmlLabel = "Проверка на наличие КодНО";
+    public static final String checkVidDockHtmlLabel = "Проверка на наличие ВидДок";
     public static final String checkForDifficultFormatsHtmlLabel = "Проверка на пустышку сложных форматов НДС, бухбаланс";
     public static final String checkHtmlLabel = "Проверка";
     public static final String resultHtmlLabel = "Результат";
@@ -37,4 +37,11 @@ public class Constants {
     public static final String KPPFileSelectAttribute = "/Файл/Документ/СвНП/НПЮЛ/@КПП";
     public static final String NPULFileAttribute = "НПЮЛ";
     public static final String NPULFileSelectAttribute = "/Файл/Документ/СвНП/НПЮЛ";
+    public static final String INNAttribute = "ИНН";
+    public static final String INNFLFieldAttribute = "{$ИННФЛ}";
+    public static final String INNULFieldAttribute = "{$ИННЮЛ}";
+    public static final String KPPFieldAttribute = "{$КПП}";
+    public static final String commonULandFLTestAttribute = "$IS_UL";
+    public static final String commonULandFLNameAttribute = "IS_UL";
+    public static final String commonULandFLSelectAttribute = "boolean($НПЮЛ)";
 }
