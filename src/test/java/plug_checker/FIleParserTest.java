@@ -9,7 +9,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import plug_checker.checker.FileParser;
 
-import static plug_checker.constants.Constants.fileStartTestAttribute;
 import static plug_checker.constants.Constants.invalidMsgAttribute;
 
 class FileParserTest {

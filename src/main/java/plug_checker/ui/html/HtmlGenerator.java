@@ -45,7 +45,7 @@ public class HtmlGenerator {
                                 ),
                                 tr().with(
                                         td().with(span(checkIdPolExtractHtmlLabel)),
-                                        generateOutputCell("+")
+                                        generateOutputCell(checkResult.get(checkIdPolExtractHtmlLabel))
                                 ),
                                 tr().with(
                                         td().with(span(checkINNHtmLabel)),

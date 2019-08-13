@@ -26,6 +26,7 @@ public class Checker {
         result.put(idFileHtmlLabel, idFilePrefixCheck());
         result.put(checkPrefixHtmlLabel, checkPrefixForLatinSymbols());
         result.put(checkNecessaryParametersHtmlLabel, checkForNecessaryAttributes());
+        result.put(checkIdPolExtractHtmlLabel, checkIdPolFileExtracting());
 
         return result;
     }
@@ -89,18 +90,57 @@ public class Checker {
         }
 
         if(!report.contains(idFileAttribute) && !selectIdFileAttributeIsCorrect) {
-            report += "Incorrect " + invalidMsgAttribute + " select attribute. ";
+            report += "Incorrect " + idFileAttribute + " select attribute. ";
         }
 
         return report.length() > 0 ? report : "+";
     }
 
-    private boolean checkNodeValue(Node checkInvalidMsg, String attributeValue) {
-        if (checkInvalidMsg.hasAttributes()) {
-            NamedNodeMap nodeMap = checkInvalidMsg.getAttributes();
+    private String checkIdPolFileExtracting(){
+        String report = "";
+
+        Node idPolFileNode = xslParser.getParentNodeWithNameAttribute(idPolFileAttribute);
+        if(idPolFileNode == null) {
+            return idPolFileAttribute + " is not found. ";
+        }
+        String idPolExtractor = getNodeAttributeValue(idPolFileNode, "select");
+        if(idPolExtractor == null) {
+            return idPolFileAttribute + " doesn't have select attribute.";
+        }
+
+        String[] tokenArray = idPolExtractor.split("[,)]");
+        if(tokenArray.length < 3) {
+            return idPolFileAttribute + " select attribute syntax isn't correct";
+        }
+
+        int firstSymbolIndex = Integer.parseInt(tokenArray[1]);
+        int codeLength = Integer.parseInt(tokenArray[2]);
+
+        report = firstSymbolIndex +  " " + codeLength; // temp
+        // TODO using firstSymbolIndex & codeLength extract IFNS code from xsd filename after confirming task details
+
+        return report.length() > 0 ? report : "+";
+    }
+
+    private String getNodeAttributeValue(Node node, String attributeName) {
+        if (node.hasAttributes()) {
+            NamedNodeMap nodeMap = node.getAttributes();
             for (int i = 0; i < nodeMap.getLength(); i++) {
-                Node node = nodeMap.item(i);
-                if(node.getNodeValue().equals(attributeValue)) {
+                Node tempNode = nodeMap.item(i);
+                if(tempNode.getNodeName().equals(attributeName)) {
+                    return tempNode.getNodeValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean checkNodeValue(Node node, String attributeValue) {
+        if (node.hasAttributes()) {
+            NamedNodeMap nodeMap = node.getAttributes();
+            for (int i = 0; i < nodeMap.getLength(); i++) {
+                Node tempNode = nodeMap.item(i);
+                if(tempNode.getNodeValue().equals(attributeValue)) {
                     return true;
                 }
             }
